@@ -1,10 +1,13 @@
 package com.example.springreactive3.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@NoArgsConstructor
 @Document(collation = "language")
 public class Language {
 
@@ -15,4 +18,9 @@ public class Language {
     private String creator;
     private String feature;
 
+    public Language(String name, String creator, String feature) {
+        this.name = name;
+        this.creator = creator;
+        this.feature = feature;
+    }
 }
