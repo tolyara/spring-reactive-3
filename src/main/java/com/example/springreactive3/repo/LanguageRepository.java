@@ -7,5 +7,6 @@ import reactor.core.publisher.Mono;
 public interface LanguageRepository extends ReactiveMongoRepository<Language, String> {
 
     Mono<Language> findByName(String name);
+    Mono<Void> deleteByName(String name);
 
 }

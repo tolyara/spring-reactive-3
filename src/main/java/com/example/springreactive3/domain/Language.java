@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @NoArgsConstructor
-@Document(collation = "language")
+@Document(collection = "language")
 public class Language {
 
     @Id

@@ -2,10 +2,9 @@ package com.example.springreactive3.rest;
 
 import com.example.springreactive3.domain.Language;
 import com.example.springreactive3.repo.LanguageRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,9 +23,21 @@ public class LanguageController {
         return languageRepository.findAll();
     }
 
-    @GetMapping("/{name}}")
+    @GetMapping("/name/{name}")
     public Mono<Language> getByName(@PathVariable("name") String name) {
         return languageRepository.findByName(name);
+    }
+
+    @PostMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<Language> create(@RequestBody Mono<Language> newLanguage) {
+        return languageRepository.saveAll(newLanguage).next();
+    }
+
+    @DeleteMapping("/{name}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Mono<Void> delete(@PathVariable String name) {
+        return languageRepository.deleteByName(name);
     }
 
 }
