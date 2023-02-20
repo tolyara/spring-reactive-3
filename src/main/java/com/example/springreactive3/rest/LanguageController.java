@@ -41,6 +41,7 @@ public class LanguageController {
 //        Mono<Language> savedLanguage = savedLanguages.next();
 //        savedLanguage.subscribe(result -> logger.info("Entity has been saved: {}", result));
 
+        //TODO - fix duplicates in DB
         Mono<Language> savedLanguage = languageRepository.save(newLanguage);
         savedLanguage.subscribe(result -> logger.info("Entity has been saved: {}", result));
 
