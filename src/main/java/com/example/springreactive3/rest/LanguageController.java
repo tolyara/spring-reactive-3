@@ -57,4 +57,19 @@ public class LanguageController {
         return languageRepository.deleteByName(name);
     }
 
+    @PatchMapping("/languages/name/{name}")
+    public Mono<ResponseEntity<Language>> update(@PathVariable String name, @RequestBody Language language) {
+        Mono<ResponseEntity<Language>> result = languageRepository.findByName(name)
+                .flatMap(existingLanguage -> {
+                    if (language.getCreator() != null)
+                        existingLanguage.setCreator(language.getCreator());
+                    if (language.getFeature() != null)
+                        existingLanguage.setFeature(language.getFeature());
+                    return languageRepository.save(existingLanguage);
+                }).map(updatedLanguage -> {
+                    return new ResponseEntity<>(updatedLanguage, HttpStatus.OK);
+                }).defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return result;
+    }
+
 }
