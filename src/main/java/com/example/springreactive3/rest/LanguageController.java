@@ -5,6 +5,7 @@ import com.example.springreactive3.repo.LanguageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -32,16 +33,21 @@ public class LanguageController {
         return languageRepository.findByName(name);
     }
 
-    @PostMapping(value = "/languages", consumes = "application/json")
+    @PostMapping(value = "/languages", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Language> create(@RequestBody Mono<Language> newLanguage) {
+//    public Mono<Language> create(@RequestBody Mono<Language> newLanguage) {
+    public Mono<Language> create(@RequestBody Language newLanguage) {
 //        Flux<Language> savedLanguages = languageRepository.saveAll(newLanguage);
-//        savedLanguages.next();
+//        Mono<Language> savedLanguage = savedLanguages.next();
+//        savedLanguage.subscribe(result -> logger.info("Entity has been saved: {}", result));
 
-        Language forTestLanguage = new Language("Testik11", "rrr", "ddd");
-        languageRepository.save(forTestLanguage).subscribe(result -> logger.info("Entity has been saved: {}", result));;
+        Mono<Language> savedLanguage = languageRepository.save(newLanguage);
+        savedLanguage.subscribe(result -> logger.info("Entity has been saved: {}", result));
 
-        return null;
+//        Language forTestLanguage = new Language("Testik11", "rrr", "ddd");
+//        languageRepository.save(forTestLanguage).subscribe(result -> logger.info("Entity has been saved: {}", result));;
+
+        return savedLanguage;
     }
 
     @DeleteMapping("/{name}")
